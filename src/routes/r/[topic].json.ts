@@ -98,11 +98,7 @@ function getThumb(entry: Entry) {
     }
     return undefined;
   }
-  return {
-    src: entry.thumbnail,
-    width: entry.thumbnail_width,
-    height: entry.thumbnail_height,
-  };
+  return entry.thumbnail;
 }
 function getVideo(entry: Entry) {
   return entry.media?.reddit_video?.fallback_url;

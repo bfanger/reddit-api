@@ -1,0 +1,75 @@
+openapi: 3.0.3
+info:
+  version: 1.0.0
+  title: API Docs
+servers:
+  - url: https://reddit.bfanger.nl/
+paths:
+  /r/{topic}.json:
+    get:
+      parameters:
+        - name: topic
+          in: path
+          required: true
+          schema: { type: string }
+        - name: limit
+          in: query
+          description: Number of items per page (before filters)
+          schema:
+            type: number
+            default: 60
+        - name: after
+          description: Pagination cursor (Included in the "next" url)
+          in: query
+          schema: { type: string }
+        - name: thumbnail
+          in: query
+          description: Show only entries with thumbnails
+          schema:
+            type: string
+            enum: ["1", ""]
+
+      responses:
+        "200":
+          description: feed
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/feed"
+        "404":
+          description: Not found
+
+components:
+  schemas:
+    feed:
+      type: object
+      properties:
+        next:
+          type: string
+        posts:
+          type: array
+          items:
+            type: object
+            required:
+              - id
+                title
+                url
+                description
+                created
+            properties:
+              id:
+                type: string
+              title:
+                type: string
+              url:
+                type: string
+              description:
+                type: string
+              created:
+                type: number
+              thumbnail:
+                type: string
+              video:
+                type: string
+              embed:
+                type: string
