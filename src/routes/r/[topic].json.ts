@@ -50,6 +50,7 @@ export const get: RequestHandler = async ({ params, url }) => {
     },
     body: {
       next,
+      after: json.data.after,
       posts: entries
         .filter((child) => entryFilter(child.data))
         .map(({ data: entry }) => ({

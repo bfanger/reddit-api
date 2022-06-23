@@ -11,6 +11,7 @@ export type ApiGetResponse = {"{"}
 
 type ListingDto = {"{"}
   next: string;
+  after: string;
   posts: Array&lt;{"{"}
     id: string;
     url: string;
@@ -20,7 +21,7 @@ type ListingDto = {"{"}
     thumbnail?: string;
     video?: string;
     embed?: string;
-  }{"}"}&gt;
+  {"}"}&gt;
 {"}"}
   </pre>
 </section>

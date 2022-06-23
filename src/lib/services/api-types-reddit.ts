@@ -8,6 +8,7 @@ export type ApiGetResponse = {
 
 export type ListingDto = {
   next: string;
+  after: string;
   posts: Array<{
     id: string;
     url: string;

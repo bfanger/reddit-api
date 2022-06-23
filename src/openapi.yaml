@@ -46,6 +46,8 @@ components:
       properties:
         next:
           type: string
+        after:
+          type: string
         posts:
           type: array
           items:
