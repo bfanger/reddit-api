@@ -6,6 +6,7 @@
     "dev": "svelte-kit dev",
     "build": "svelte-kit build",
     "preview": "svelte-kit preview",
+    "start": "svelte-kit dev --host --port=$PORT",
     "lint": "concurrently -c \"#c596c7\",\"#676778\",\"#3074c0\",\"#7c7cea\" --kill-others-on-fail \"npm:lint:*\"",
     "lint:prettier": "prettier --check --loglevel=warn \"src/**/*.svelte\"",
     "lint:svelte-check": "svelte-check --fail-on-warnings --fail-on-hints --ignore build,package",
@@ -29,7 +30,7 @@
       "prettier --check"
     ]
   },
-  "devDependencies": {
+  "dependencies": {
     "@sveltejs/adapter-node": "next",
     "@sveltejs/kit": "next",
     "@types/swagger-ui-dist": "^3.30.1",
@@ -57,9 +58,7 @@
     "svelte-check": "^2.7.2",
     "svelte-preprocess": "^4.10.6",
     "typescript": "^4.7.2",
-    "vite": "^2.9.9"
-  },
-  "dependencies": {
+    "vite": "^2.9.9",
     "dotenv": "^16.0.0",
     "swagger-ui-dist": "^4.12.0"
   }
