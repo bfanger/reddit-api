@@ -7,13 +7,9 @@
 import type { Load, LoadOutputCache } from "@sveltejs/kit";
 import env from "./env";
 import buildUrl from "./buildUrl";
-import type {
-  ApiGetResponse,
-  ApiPostResponse,
-} from "./api-types-jsonplaceholder";
+import type { ApiGetResponse, ApiPostResponse } from "./api-types-reddit";
 
-const endpoint =
-  env.SVELTE_PUBLIC_API_ENDPOINT ?? "https://jsonplaceholder.typicode.com/";
+const endpoint = env.SVELTE_PUBLIC_API_ENDPOINT ?? "https://reddit.bfanger.nl/";
 
 export type Fetch = (
   info: RequestInfo,
@@ -82,7 +78,7 @@ const api = {
     data: unknown,
     config?: Config
   ): Promise<ApiResponse<ApiPostResponse[T]>> {
-    return wrapped("POST", path, {
+    return wrapped("POST", path as string, {
       ...config,
       headers: {
         ...config?.headers,

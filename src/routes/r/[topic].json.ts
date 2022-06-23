@@ -1,4 +1,4 @@
-import type { Listing, Entry } from "$lib/services/api-types-reddit";
+import type { Listing, Entry } from "$lib/services/backend-api-types-reddit";
 import type { RequestHandler } from "@sveltejs/kit";
 
 const MIN = 60;
