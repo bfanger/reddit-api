@@ -30,7 +30,7 @@
     ]
   },
   "devDependencies": {
-    "@sveltejs/adapter-vercel": "^1.0.0-next.58",
+    "@sveltejs/adapter-node": "next",
     "@sveltejs/kit": "next",
     "@types/swagger-ui-dist": "^3.30.1",
     "@typescript-eslint/eslint-plugin": "^5.27.0",
