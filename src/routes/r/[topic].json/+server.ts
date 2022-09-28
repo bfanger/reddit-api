@@ -1,58 +1,38 @@
+import { error, json, type RequestHandler } from "@sveltejs/kit";
 import type { Listing, Entry } from "$lib/services/backend-api-types-reddit";
-import type { RequestHandler } from "@sveltejs/kit";
 
 const MIN = 60;
-export const get: RequestHandler = async ({ params, url }) => {
+export const GET: RequestHandler = async ({ params, url }) => {
   const thumbnail = !!url.searchParams.get("thumbnail");
   const embed = !!url.searchParams.get("embed");
   const after = url.searchParams.get("after");
   const limit = parseInt(url.searchParams.get("limit") as any, 10) || 60;
 
-  function entryFilter(entry: Entry) {
-    if (entry.over_18) {
-      return false;
-    }
-    if (thumbnail && !getThumb(entry)) {
-      return false;
-    }
-    if (embed && !entry.media_embed?.content) {
-      return false;
-    }
-    return true;
-  }
   const redditUrl = new URL(`https://reddit.com/r/${params.topic}/.json`);
   redditUrl.searchParams.set("limit", `${limit}`);
   if (after) {
     redditUrl.searchParams.set("after", after);
   }
   const response = await fetch(redditUrl.toString());
-  const json: Listing = await response.json();
+  const result: Listing = await response.json();
   if (!response.ok) {
-    return {
-      status: response.status,
-      body: json,
-    };
+    throw error(response.status, JSON.stringify(result));
   }
   let next: URL | undefined;
-  if (json.data.after) {
+  if (result.data.after) {
     next = new URL(url);
-    next.searchParams.set("after", json.data.after);
+    next.searchParams.set("after", result.data.after);
   }
-  let entries = json.data.children;
+  let entries = result.data.children;
   if (!after && entries.length > limit) {
     entries = entries.slice(1);
   }
-  return {
-    headers: {
-      "Access-Control-Allow-Origin": "*",
-      "Cache-Control": `public, max-age: ${15 * MIN}`,
-      "Reddit-Url": redditUrl.toString(),
-    },
-    body: {
+  return json(
+    {
       next,
-      after: json.data.after,
+      after: result.data.after,
       posts: entries
-        .filter((child) => entryFilter(child.data))
+        .filter((child) => entryFilter(child.data, thumbnail, embed))
         .map(({ data: entry }) => ({
           id: entry.id,
           title: entry.title,
@@ -67,7 +47,14 @@ export const get: RequestHandler = async ({ params, url }) => {
           // raw: entry,
         })),
     },
-  };
+    {
+      headers: {
+        "Access-Control-Allow-Origin": "*",
+        "Cache-Control": `public, max-age: ${15 * MIN}`,
+        "Reddit-Url": redditUrl.toString(),
+      },
+    }
+  );
 };
 
 function decodeEntities(encodedString?: string) {
@@ -103,4 +90,17 @@ function getThumb(entry: Entry) {
 }
 function getVideo(entry: Entry) {
   return entry.media?.reddit_video?.fallback_url;
+}
+
+function entryFilter(entry: Entry, thumbnail: boolean, embed: boolean) {
+  if (entry.over_18) {
+    return false;
+  }
+  if (thumbnail && !getThumb(entry)) {
+    return false;
+  }
+  if (embed && !entry.media_embed?.content) {
+    return false;
+  }
+  return true;
 }

@@ -3,10 +3,10 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "svelte-kit dev",
-    "build": "svelte-kit build",
-    "preview": "svelte-kit preview",
-    "start": "svelte-kit dev --host --port=$PORT",
+    "dev": "vite dev",
+    "build": "vite build",
+    "preview": "vite preview",
+    "start": "node ./build/index.js",
     "lint": "concurrently -c \"#c596c7\",\"#676778\",\"#3074c0\",\"#7c7cea\" --kill-others-on-fail \"npm:lint:*\"",
     "lint:prettier": "prettier --check --loglevel=warn \"src/**/*.svelte\"",
     "lint:svelte-check": "svelte-check --fail-on-warnings --fail-on-hints --ignore build,package",
@@ -31,19 +31,19 @@
     ]
   },
   "dependencies": {
-    "@sveltejs/adapter-node": "next",
     "@sveltejs/kit": "next",
     "@types/swagger-ui-dist": "^3.30.1",
     "@typescript-eslint/eslint-plugin": "^5.27.0",
     "@typescript-eslint/parser": "^5.27.0",
     "autoprefixer": "^10.4.7",
     "concurrently": "^7.2.1",
+    "dotenv": "^16.0.0",
     "eslint": "^8.16.0",
     "eslint-config-airbnb-base": "^15.0.0",
     "eslint-config-airbnb-typescript": "^17.0.0",
     "eslint-config-prettier": "^8.5.0",
     "eslint-config-triple": "^0.5.1",
-    "eslint-import-resolver-typescript": "^2.7.1",
+    "eslint-import-resolver-typescript": "^3.5.1",
     "eslint-plugin-import": "^2.26.0",
     "eslint-plugin-only-warn": "^1.0.3",
     "eslint-plugin-prettier": "^4.0.0",
@@ -57,9 +57,11 @@
     "svelte": "^3.48.0",
     "svelte-check": "^2.7.2",
     "svelte-preprocess": "^4.10.6",
+    "swagger-ui-dist": "^4.12.0",
     "typescript": "^4.7.2",
-    "vite": "^2.9.9",
-    "dotenv": "^16.0.0",
-    "swagger-ui-dist": "^4.12.0"
+    "vite": "^3.1.4"
+  },
+  "devDependencies": {
+    "@sveltejs/adapter-vercel": "^1.0.0-next.77"
   }
 }

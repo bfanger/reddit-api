@@ -4,12 +4,11 @@
  * The responses of the api methods contain the data direcly but also have a hidden property.
  * This allows access to the headers and http status of the response using the helper methods.
  */
-import type { Load, LoadOutputCache } from "@sveltejs/kit";
-import env from "./env";
+import { error } from "@sveltejs/kit";
 import buildUrl from "./buildUrl";
-import type { ApiGetResponse, ApiPostResponse } from "./api-types-reddit";
+import type { ApiGetResponse } from "./api-types-reddit";
 
-const endpoint = env.SVELTE_PUBLIC_API_ENDPOINT ?? "https://reddit.bfanger.nl/";
+const endpoint = "/";
 
 export type Fetch = (
   info: RequestInfo,
@@ -45,7 +44,15 @@ async function wrapped(
   init.method = method;
   const url = endpoint + buildUrl(path, params);
   const start = Date.now();
-  const response = await fetch(url, init);
+  let response: Response;
+  try {
+    response = await fetch(url, init);
+  } catch (err: any) {
+    if (err.message) {
+      throw new Error(`${method} ${url} failed: ${err.message}`);
+    }
+    throw err;
+  }
   const duration = (Date.now() - start) / 1000;
   if (duration > 1) {
     console.info(
@@ -53,11 +60,12 @@ async function wrapped(
     );
   }
   if (!response.ok) {
-    const error = new Error(
+    const err = error(
+      response.status,
       `${method} ${url} failed: ${response.status} ${response.statusText}`
     ) as ApiResponse<Error>;
-    error[responseSymbol] = response;
-    throw error;
+    err[responseSymbol] = response;
+    throw err;
   }
   const data = await response.json();
   if (config.signal && config.signal.aborted) {
@@ -72,20 +80,6 @@ const api = {
     config?: Config
   ): Promise<ApiResponse<ApiGetResponse[T]>> {
     return wrapped("GET", path, config || {});
-  },
-  async post<T extends keyof ApiPostResponse>(
-    path: T,
-    data: unknown,
-    config?: Config
-  ): Promise<ApiResponse<ApiPostResponse[T]>> {
-    return wrapped("POST", path as string, {
-      ...config,
-      headers: {
-        ...config?.headers,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(data),
-    });
   },
 };
 export default api;
@@ -129,35 +123,4 @@ export function getHeader(
     }
   }
   return undefined;
-}
-
-export function getCacheConfig(
-  response: ApiResponse | unknown
-): LoadOutputCache | undefined {
-  const cacheControl = getHeader(response, "Cache-Control");
-  const match = cacheControl && cacheControl.match(/^max-age=([0-9]+)/);
-  if (match) {
-    return { maxage: parseInt(match[1], 10) };
-  }
-  return undefined;
-}
-
-/**
- * Report the error message and generate a load response that will go the the __error.svelte route.
- */
-export function loadError(err: Error | unknown): ReturnType<Load> {
-  const error = err as Error;
-  const code = getStatus(err);
-  if (code === undefined) {
-    console.error(error);
-  } else {
-    const clean = new Error(error.message || "load error");
-    clean.stack = error.stack;
-    clean.name = error.name;
-    console.error(clean);
-  }
-  return {
-    status: code && code > 400 ? code : 500,
-    error: error || "load error",
-  };
 }

@@ -20,5 +20,3 @@ export type ListingDto = {
     embed?: string;
   }>;
 };
-
-export type ApiPostResponse = any;
