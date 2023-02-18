@@ -1,28 +1,44 @@
 <script lang="ts">
+  import { browser } from "$app/environment";
   import { onMount } from "svelte";
   import type { PageData } from "./$types";
 
-  export let data: PageData;
   type Post = PageData["posts"][number];
-  let active: Post = data.posts[0];
 
+  export let data: PageData;
+
+  let index = 0;
+
+  $: imagePosts = data.posts.filter((post) => post.url.match(/(.jpg|.png)$/));
+  $: current = imagePosts[index];
+  $: next = imagePosts[index + 1];
+  $: preload(next);
+
+  function preload(post: Post) {
+    if (browser) {
+      new Image().src = post.url;
+    }
+  }
+
+  let el: HTMLInputElement | undefined;
   onMount(() => {
-    document.querySelector("input")?.focus();
+    el?.focus();
   });
 </script>
 
 <div class="layout">
   <div class="master">
     <ul class="list">
-      {#each data.posts as post}
+      {#each imagePosts as post, i (post.id)}
         <li>
-          <label class="item" class:active={post === active}>
+          <label class="item" class:active={i === index}>
             <input
+              bind:this={el}
               class="radio"
               type="radio"
               name="post"
-              value={post}
-              bind:group={active}
+              value={i}
+              bind:group={index}
             />
             {#if post.thumbnail}
               <img class="thumbnail" src={post.thumbnail} alt="" /><br />
@@ -34,14 +50,12 @@
     </ul>
   </div>
   <div class="detail">
-    {#if active}
-      <h1 class="title"><a href={active.url}>{active.title}</a></h1>
+    {#if current}
+      <h1 class="title"><a href={current.url}>{current.title}</a></h1>
       <div class="preview">
-        {#if /(.jpg|.png)$/.exec(active.url)}
-          <img class="stretch" src={active.url} alt="" />
-        {:else}
-          <iframe class="stretch" src={active.url} frameborder="0" title="" />
-        {/if}
+        {#key current.url}
+          <img class="stretch" src={current.url} alt="" />
+        {/key}
       </div>
     {/if}
   </div>

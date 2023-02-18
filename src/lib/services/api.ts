@@ -63,7 +63,7 @@ async function wrapped(
     const err = error(
       response.status,
       `${method} ${url} failed: ${response.status} ${response.statusText}`
-    ) as ApiResponse<Error>;
+    ) as any as ApiResponse<Error>;
     err[responseSymbol] = response;
     throw err;
   }
