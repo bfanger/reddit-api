@@ -1,10 +1,10 @@
 {
-  "name": "svelte-project-template",
+  "name": "reddit-api",
   "private": true,
   "type": "module",
   "scripts": {
     "dev": "vite dev",
-    "build": "vite build",
+    "build": "vite build && ls -al && tvkit build ./.vercel/output --out ./.vercel/output -f --browser ie11",
     "preview": "vite preview",
     "start": "node ./build/index.js",
     "lint": "concurrently -c \"#c596c7\",\"#676778\",\"#3074c0\",\"#7c7cea\" --kill-others-on-fail \"npm:lint:*\"",
@@ -59,6 +59,7 @@
     "svelte-check": "^3.0.3",
     "svelte-preprocess": "^5.0.1",
     "swagger-ui-dist": "^4.15.5",
+    "tvkit": "github:bfanger/tvkit#main",
     "typescript": "^4.9.5",
     "vite": "^4.1.2"
   },
