@@ -32,14 +32,14 @@
     ]
   },
   "dependencies": {
-    "@sveltejs/kit": "^1.7.2",
+    "@sveltejs/kit": "^1.9.3",
     "@types/swagger-ui-dist": "^3.30.1",
-    "@typescript-eslint/eslint-plugin": "^5.52.0",
-    "@typescript-eslint/parser": "^5.52.0",
+    "@typescript-eslint/eslint-plugin": "^5.54.0",
+    "@typescript-eslint/parser": "^5.54.0",
     "autoprefixer": "^10.4.13",
     "concurrently": "^7.6.0",
     "dotenv": "^16.0.3",
-    "eslint": "^8.34.0",
+    "eslint": "^8.35.0",
     "eslint-config-airbnb-base": "^15.0.0",
     "eslint-config-airbnb-typescript": "^17.0.0",
     "eslint-config-prettier": "^8.6.0",
@@ -56,13 +56,13 @@
     "prettier-plugin-svelte": "^2.9.0",
     "sass": "^1.58.3",
     "svelte": "^3.55.1",
-    "svelte-check": "^3.0.3",
+    "svelte-check": "^3.0.4",
     "svelte-preprocess": "^5.0.1",
-    "swagger-ui-dist": "^4.15.5",
+    "swagger-ui-dist": "^4.17.0",
     "typescript": "^4.9.5",
-    "vite": "^4.1.2"
+    "vite": "^4.1.4"
   },
   "devDependencies": {
-    "@sveltejs/adapter-vercel": "^2.0.4"
+    "@sveltejs/adapter-vercel": "^2.2.1"
   }
 }

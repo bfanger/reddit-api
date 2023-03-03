@@ -12,7 +12,9 @@
   $: imagePosts = data.posts.filter((post) => post.url.match(/(.jpg|.png)$/));
   $: current = imagePosts[index];
   $: next = imagePosts[index + 1];
-  $: preload(next);
+  $: if (next) {
+    preload(next);
+  }
 
   function preload(post: Post) {
     if (browser) {
