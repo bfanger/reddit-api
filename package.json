@@ -8,61 +8,58 @@
     "preview": "vite preview",
     "start": "node ./build/index.js",
     "lint": "concurrently -c \"#c596c7\",\"#676778\",\"#3074c0\",\"#7c7cea\" --kill-others-on-fail \"npm:lint:*\"",
-    "lint:prettier": "prettier --check --loglevel=warn \"src/**/*.svelte\"",
+    "lint:prettier": "prettier --check \"src/**/*.svelte\"",
     "lint:svelte-check": "svelte-check --fail-on-warnings --fail-on-hints --ignore build,package",
     "lint:tsc": "tsc --noEmit",
     "lint:eslint": "eslint --ext=js,ts,svelte --max-warnings=0 src",
-    "format": "prettier --write . && eslint --ext=js,ts,svelte --fix src",
+    "format": "eslint --ext=js,ts,svelte --fix src && prettier --write .",
     "preinstall": "npx only-allow pnpm",
     "prepare": "husky install"
   },
   "prettier": "eslint-config-triple/.prettierrc",
   "lint-staged": {
-    "*.ts": [
-      "eslint --max-warnings 0 --no-ignore",
-      "sh -c 'tsc -p tsconfig.json --noEmit'"
+    "*.(js|ts|svelte)": [
+      "eslint --max-warnings 0 --ext js --no-ignore"
     ],
-    "*.(c)?js": [
-      "eslint --max-warnings 0 --no-ignore"
+    "*.(svelte|ts)": [
+      "svelte-check --fail-on-warnings"
     ],
-    "*.svelte": [
-      "eslint --max-warnings 0 --no-ignore",
-      "svelte-check --fail-on-warnings --fail-on-hints",
+    "*.(ts|svelte|json|scss|md)": [
       "prettier --check"
     ]
   },
   "dependencies": {
-    "@sveltejs/kit": "^1.9.3",
+    "@sveltejs/kit": "^1.24.0",
     "@types/swagger-ui-dist": "^3.30.1",
-    "@typescript-eslint/eslint-plugin": "^5.54.0",
-    "@typescript-eslint/parser": "^5.54.0",
-    "autoprefixer": "^10.4.13",
-    "concurrently": "^7.6.0",
-    "dotenv": "^16.0.3",
-    "eslint": "^8.35.0",
+    "@typescript-eslint/eslint-plugin": "^6.5.0",
+    "@typescript-eslint/parser": "^6.5.0",
+    "autoprefixer": "^10.4.15",
+    "concurrently": "^8.2.1",
+    "dotenv": "^16.3.1",
+    "eslint": "^8.48.0",
     "eslint-config-airbnb-base": "^15.0.0",
-    "eslint-config-airbnb-typescript": "^17.0.0",
-    "eslint-config-prettier": "^8.6.0",
-    "eslint-config-triple": "^0.5.7",
-    "eslint-import-resolver-typescript": "^3.5.3",
-    "eslint-plugin-import": "^2.27.5",
+    "eslint-config-airbnb-typescript": "^17.1.0",
+    "eslint-config-prettier": "^9.0.0",
+    "eslint-config-triple": "^1.1.3",
+    "eslint-import-resolver-typescript": "^3.6.0",
+    "eslint-plugin-import": "^2.28.1",
     "eslint-plugin-only-warn": "^1.1.0",
-    "eslint-plugin-prettier": "^4.2.1",
-    "eslint-plugin-svelte3": "^4.0.0",
+    "eslint-plugin-prettier": "^5.0.0",
+    "eslint-plugin-svelte": "^2.33.0",
     "husky": "^8.0.3",
-    "lint-staged": "^13.1.2",
-    "postcss": "^8.4.21",
-    "prettier": "^2.8.4",
-    "prettier-plugin-svelte": "^2.9.0",
-    "sass": "^1.58.3",
-    "svelte": "^3.55.1",
-    "svelte-check": "^3.0.4",
-    "svelte-preprocess": "^5.0.1",
-    "swagger-ui-dist": "^4.17.0",
-    "typescript": "^4.9.5",
-    "vite": "^4.1.4"
+    "lint-staged": "^14.0.1",
+    "postcss": "^8.4.29",
+    "prettier": "^3.0.3",
+    "prettier-plugin-svelte": "^3.0.3",
+    "sass": "^1.66.1",
+    "svelte": "^4.2.0",
+    "svelte-check": "^3.5.1",
+    "svelte-preprocess": "^5.0.4",
+    "swagger-ui-dist": "^5.4.2",
+    "typescript": "^5.2.2",
+    "vite": "^4.4.9"
   },
   "devDependencies": {
-    "@sveltejs/adapter-vercel": "^2.2.1"
+    "@sveltejs/adapter-vercel": "^3.0.3"
   }
 }

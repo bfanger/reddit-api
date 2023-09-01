@@ -6,7 +6,7 @@ import path from "path";
 const projectDir = new URL(".", import.meta.url).pathname;
 
 const packageJson = JSON.parse(
-  await fs.readFile(path.resolve(projectDir, "package.json"), "utf-8")
+  await fs.readFile(path.resolve(projectDir, "package.json"), "utf-8"),
 );
 
 const scripts = {
@@ -54,9 +54,9 @@ for (const [dependency, version] of Object.entries(devDependencies)) {
 
 for (const folder of [".storybook", "playwright", "playwright/tests"]) {
   // eslint-disable-next-line no-await-in-loop
-  await fs.stat(path.resolve(projectDir, folder)).catch(() => {
-    return fs.mkdir(path.resolve(projectDir, folder));
-  });
+  await fs
+    .stat(path.resolve(projectDir, folder))
+    .catch(() => fs.mkdir(path.resolve(projectDir, folder)));
 }
 
 async function writeFile(filename, body) {
@@ -79,7 +79,7 @@ export default defineConfig({
     exclude: [...configDefaults.exclude, "package", "playwright"],
   },
 });
-`
+`,
 );
 await writeFile(
   "playwright.config.ts",
@@ -125,7 +125,7 @@ const config: PlaywrightTestConfig = {
 };
 
 export default config;
-`
+`,
 );
 await writeFile(
   "playwright/tests/hello-world.spec.ts",
@@ -136,7 +136,7 @@ test("hello world", async ({ page }) => {
   await page.locator("text=Hello world").click();
   await expect(page.locator("text=Hello you")).toBeVisible();
 });
-`
+`,
 );
 await writeFile(
   ".storybook/main.cjs",
@@ -167,7 +167,7 @@ module.exports = {
     return config;
   },
 };
-`
+`,
 );
 const globalScssExists = await fs
   .stat(path.resolve(projectDir, "src/global.scss"))
@@ -177,7 +177,7 @@ if (globalScssExists) {
   await writeFile(
     ".storybook/preview.cjs",
     `import "../src/global.scss";
-`
+`,
   );
 }
 
@@ -187,7 +187,7 @@ await writeFile(
 . "$(dirname "$0")/_/husky.sh"
 
 npm run test
-`
+`,
 );
 await fs.chmod(path.resolve(projectDir, ".husky/pre-push"), "755");
 
@@ -229,7 +229,7 @@ describe("Hello component", () => {
     expect(listener).toBeCalledTimes(1);
   });
 });
-`
+`,
   );
   await writeFile(
     "src/lib/components/Hello/Hello.stories.svelte",
@@ -264,9 +264,9 @@ describe("Hello component", () => {
     name: "world",
   }}
 />
-`
+`,
   );
 }
 process.stdout.write(
-  "\n\nTo bring in the additional depencencies for Vitest & Storybook run:\n\nyarn  # or npm install\n"
+  "\n\nTo bring in the additional depencencies for Vitest & Storybook run:\n\nyarn  # or npm install\n",
 );

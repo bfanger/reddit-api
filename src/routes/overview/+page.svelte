@@ -1,7 +1,7 @@
 <script lang="ts">
-  import { browser } from "$app/environment";
   import { onMount } from "svelte";
   import type { PageData } from "./$types";
+  import { browser } from "$app/environment";
 
   type Post = PageData["posts"][number];
 

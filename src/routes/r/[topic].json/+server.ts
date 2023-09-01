@@ -40,7 +40,7 @@ export const GET: RequestHandler = async ({ params, url }) => {
           thumbnail: getThumb(entry),
           video: getVideo(entry),
           embed: decodeEntities(
-            entry.secure_media_embed?.content || entry.media_embed?.content
+            entry.secure_media_embed?.content || entry.media_embed?.content,
           ),
           description: entry.selftext,
           created: entry.created_utc,
@@ -53,7 +53,7 @@ export const GET: RequestHandler = async ({ params, url }) => {
         "Cache-Control": `public, max-age: ${15 * MIN}`,
         "Reddit-Url": redditUrl.toString(),
       },
-    }
+    },
   );
 };
 
@@ -72,7 +72,7 @@ function decodeEntities(encodedString?: string) {
   return encodedString
     .replace(
       translateRegex,
-      (match: any, entity: keyof typeof translate) => translate[entity]
+      (match: any, entity: keyof typeof translate) => translate[entity],
     )
     .replace(/&#(\d+);/gi, (match, numStr) => {
       const num = parseInt(numStr, 10);
