@@ -1,7 +1,5 @@
-<slot />
+<script lang="ts">
+  import "../global.scss"
+</script>
 
-<style lang="scss">
-  :global {
-    @import "../global.scss";
-  }
-</style>
+<slot />

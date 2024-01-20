@@ -1,7 +1,6 @@
-import type { PageLoad } from "./$types";
-import api from "$lib/services/api";
+import api from "../../services/api";
 
-export const load: PageLoad = async ({ fetch, url }) => {
+export async function load({ fetch, url }) {
   const topic = url.searchParams.get("topic") ?? "itemshop";
   const post = await api.get("r/[topic].json", {
     params: { topic },
@@ -9,4 +8,4 @@ export const load: PageLoad = async ({ fetch, url }) => {
     ssrCache: 60,
   });
   return { next: post.next, posts: post.posts };
-};
+}

@@ -10,14 +10,9 @@ import type { ApiGetResponse } from "./api-types-reddit";
 
 const endpoint = "/";
 
-export type Fetch = (
-  info: RequestInfo,
-  init?: RequestInit,
-) => Promise<Response>;
-
 type Config = RequestInit & {
   params?: Record<string, string>;
-  fetch?: Fetch;
+  fetch?: typeof fetch;
   ssrCache?: number;
 };
 const responseSymbol = Symbol("response");

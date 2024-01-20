@@ -1,6 +1,6 @@
-import { redirect, type RequestHandler } from "@sveltejs/kit";
+import { redirect } from "@sveltejs/kit";
 
 // eslint-disable-next-line import/prefer-default-export
-export const GET: RequestHandler = async ({ params }) => {
+export function GET({ params }) {
   redirect(302, `/r/${params.topic}.json`);
-};
+}
