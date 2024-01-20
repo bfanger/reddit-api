@@ -1,4 +1,9 @@
-import { error, json, type RequestHandler } from "@sveltejs/kit";
+import {
+  error,
+  json,
+  type NumericRange,
+  type RequestHandler,
+} from "@sveltejs/kit";
 import type { Listing, Entry } from "$lib/services/backend-api-types-reddit";
 
 const MIN = 60;
@@ -16,7 +21,7 @@ export const GET: RequestHandler = async ({ params, url }) => {
   const response = await fetch(redditUrl.toString());
   const result: Listing = await response.json();
   if (!response.ok) {
-    throw error(response.status, JSON.stringify(result));
+    error(response.status as NumericRange<400, 599>, JSON.stringify(result));
   }
   let next: URL | undefined;
   if (result.data.after) {

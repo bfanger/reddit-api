@@ -4,7 +4,7 @@
  * The responses of the api methods contain the data direcly but also have a hidden property.
  * This allows access to the headers and http status of the response using the helper methods.
  */
-import { error } from "@sveltejs/kit";
+import { error, type NumericRange } from "@sveltejs/kit";
 import buildUrl from "./buildUrl";
 import type { ApiGetResponse } from "./api-types-reddit";
 
@@ -63,7 +63,7 @@ async function wrapped(
   }
   if (!response.ok) {
     const err = error(
-      response.status,
+      response.status as NumericRange<400, 599>,
       `${method} ${url} failed: ${response.status} ${response.statusText}`,
     ) as any as ApiResponse<Error>;
     err[responseSymbol] = response;
